@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unitree Mujoco Documentation - G1 Robot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Unitree Mujoco G1 Robot Documentation</h1>
+    </header>
+    <main>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>This documentation provides a guide to using the Unitree Mujoco package with the G1 robot. It covers the project structure, how to run simulations, and how to interact with the robot.</p>
+        </section>
+
+        <section id="joint-info">
+            <h2>G1 Joint Information</h2>
+            <p>The G1 robot has different versions with varying degrees of freedom (DOF). The joint indexing is crucial for controlling the robot. The following tables detail the joint order for each version.</p>
+
+            <h3>23 DOF Version</h3>
+            <table>
+                <tr>
+                    <th>Joint Index</th>
+                    <th>Joint Name</th>
+                </tr>
+                <tr><td>0</td><td>L_LEG_HIP_PITCH</td></tr>
+                <tr><td>1</td><td>L_LEG_HIP_ROLL</td></tr>
+                <tr><td>2</td><td>L_LEG_HIP_YAW</td></tr>
+                <tr><td>3</td><td>L_LEG_KNEE</td></tr>
+                <tr><td>4</td><td>L_LEG_ANKLE_PITCH</td></tr>
+                <tr><td>5</td><td>L_LEG_ANKLE_ROLL</td></tr>
+                <tr><td>6</td><td>R_LEG_HIP_PITCH</td></tr>
+                <tr><td>7</td><td>R_LEG_HIP_ROLL</td></tr>
+                <tr><td>8</td><td>R_LEG_HIP_YAW</td></tr>
+                <tr><td>9</td><td>R_LEG_KNEE</td></tr>
+                <tr><td>10</td><td>R_LEG_ANKLE_PITCH</td></tr>
+                <tr><td>11</td><td>R_LEG_ANKLE_ROLL</td></tr>
+                <tr><td>12</td><td>TORSO</td></tr>
+                <tr><td>13</td><td>L_SHOULDER_PITCH</td></tr>
+                <tr><td>14</td><td>L_SHOULDER_ROLL</td></tr>
+                <tr><td>15</td><td>L_SHOULDER_YAW</td></tr>
+                <tr><td>16</td><td>L_ELBOW_PITCH</td></tr>
+                <tr><td>17</td><td>L_ELBOW_ROLL</td></tr>
+                <tr><td>18</td><td>R_SHOULDER_PITCH</td></tr>
+                <tr><td>19</td><td>R_SHOULDER_ROLL</td></tr>
+                <tr><td>20</td><td>R_SHOULDER_YAW</td></tr>
+                <tr><td>21</td><td>R_ELBOW_PITCH</td></tr>
+                <tr><td>22</td><td>R_ELBOW_ROLL</td></tr>
+            </table>
+
+            <h3>29 DOF Version</h3>
+            <table>
+                <tr>
+                    <th>Joint Index</th>
+                    <th>Joint Name</th>
+                </tr>
+                <tr><td>0</td><td>L_LEG_HIP_PITCH</td></tr>
+                <tr><td>1</td><td>L_LEG_HIP_ROLL</td></tr>
+                <tr><td>2</td><td>L_LEG_HIP_YAW</td></tr>
+                <tr><td>3</td><td>L_LEG_KNEE</td></tr>
+                <tr><td>4</td><td>L_LEG_ANKLE_PITCH</td></tr>
+                <tr><td>5</td><td>L_LEG_ANKLE_ROLL</td></tr>
+                <tr><td>6</td><td>R_LEG_HIP_PITCH</td></tr>
+                <tr><td>7</td><td>R_LEG_HIP_ROLL</td></tr>
+                <tr><td>.</td><td>...</td></tr>
+                <tr><td>28</td><td>R_WRIST_YAW</td></tr>
+            </table>
+        </section>
+
+        <section id="running-simulation">
+            <h2>Running the Simulation</h2>
+            <p>The G1 robot simulation can be run using the provided Python script. This script allows you to send high-level commands to the robot to perform various actions.</p>
+
+            <h3>Running the Python Script</h3>
+            <p>To run the simulation, execute the following command from the `simulate_python` directory:</p>
+            <pre><code>python3 test/test_g1_robot_new.py</code></pre>
+
+            <h3>Controlling the Robot</h3>
+            <p>The script provides a simple command-line interface to control the robot. You can enter the name or ID of the action you want the robot to perform. For example, to make the robot stand up from a squatting position, you can enter `Squat2StandUp` or `1`.</p>
+
+            <h3>Example Code</h3>
+            <p>The following code snippet from `test/test_g1_robot_new.py` shows how to use the `LocoClient` to send commands to the robot:</p>
+            <pre><code>from unitree_sdk2py.g1.loco.g1_loco_client import LocoClient
+import time
+
+if __name__ == "__main__":
+    sport_client = LocoClient()  
+    sport_client.SetTimeout(10.0)
+    sport_client.Init()
+
+    # Make the robot stand up
+    sport_client.Squat2StandUp()
+    time.sleep(2)
+
+    # Move the robot forward
+    sport_client.Move(0.3, 0, 0)
+    time.sleep(2)
+
+    # Make the robot wave its hand
+    sport_client.WaveHand()</code></pre>
+        </section>
+
+        <section id="cpp-example">
+            <h2>C++ Example</h2>
+            <p>The `example/cpp` directory contains a C++ example that demonstrates how to control the robot at a lower level, by sending DDS messages.</p>
+
+            <h3>Building the C++ Example</h3>
+            <p>To build the C++ example, you need to have CMake and a C++ compiler installed. From the `example/cpp` directory, run the following commands:</p>
+            <pre><code>mkdir build
+cd build
+cmake ..
+make</code></pre>
+
+            <h3>Running the C++ Example</h3>
+            <p>After building the example, you can run it from the `build` directory:</p>
+            <pre><code>./stand_go2</code></pre>
+            <p>This will make the robot stand up and then sit down.</p>
+
+            <h3>Example Code</h3>
+            <p>The following code snippet from `stand_go2.cpp` shows how to create a publisher and send low-level motor commands:</p>
+            <pre><code>#include <unitree/robot/channel/channel_publisher.hpp>
+#include <unitree/idl/go2/LowCmd_.hpp>
+
+// Create a publisher for the LowCmd topic
+ChannelPublisherPtr<unitree_go::msg::dds_::LowCmd_> lowcmd_publisher;
+lowcmd_publisher.reset(new ChannelPublisher<unitree_go::msg::dds_::LowCmd_>(TOPIC_LOWCMD));
+lowcmd_publisher->InitChannel();
+
+// Create a LowCmd message
+unitree_go::msg::dds_::LowCmd_ low_cmd{};
+
+// Set motor commands
+for (int i = 0; i < 12; i++)
+{
+    low_cmd.motor_cmd()[i].q() = ...; // Set desired position
+    low_cmd.motor_cmd()[i].kp() = ...; // Set position gain
+    low_cmd.motor_cmd()[i].dq() = ...; // Set desired velocity
+    low_cmd.motor_cmd()[i].kd() = ...; // Set velocity gain
+    low_cmd.motor_cmd()[i].tau() = ...; // Set feedforward torque
+}
+
+// Publish the message
+lowcmd_publisher->Write(low_cmd);</code></pre>
+        </section>
+    </main>
+    <footer>
+        <p>Generated by Gemini</p>
+    </footer>
+</body>
+</html>
