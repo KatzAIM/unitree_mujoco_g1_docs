@@ -57,17 +57,65 @@
                     <th>Joint Index</th>
                     <th>Joint Name</th>
                 </tr>
-                <tr><td>0</td><td>L_LEG_HIP_PITCH</td></tr>
-                <tr><td>1</td><td>L_LEG_HIP_ROLL</td></tr>
-                <tr><td>2</td><td>L_LEG_HIP_YAW</td></tr>
-                <tr><td>3</td><td>L_LEG_KNEE</td></tr>
-                <tr><td>4</td><td>L_LEG_ANKLE_PITCH</td></tr>
-                <tr><td>5</td><td>L_LEG_ANKLE_ROLL</td></tr>
-                <tr><td>6</td><td>R_LEG_HIP_PITCH</td></tr>
-                <tr><td>7</td><td>R_LEG_HIP_ROLL</td></tr>
-                <tr><td>.</td><td>...</td></tr>
-                <tr><td>28</td><td>R_WRIST_YAW</td></tr>
+                <tr><td>0</td><td>left_hip_pitch_joint</td></tr>
+                <tr><td>1</td><td>left_hip_roll_joint</td></tr>
+                <tr><td>2</td><td>left_hip_yaw_joint</td></tr>
+                <tr><td>3</td><td>left_knee_joint</td></tr>
+                <tr><td>4</td><td>left_ankle_pitch_joint</td></tr>
+                <tr><td>5</td><td>left_ankle_roll_joint</td></tr>
+                <tr><td>6</td><td>right_hip_pitch_joint</td></tr>
+                <tr><td>7</td><td>right_hip_roll_joint</td></tr>
+                <tr><td>8</td><td>right_hip_yaw_joint</td></tr>
+                <tr><td>9</td><td>right_knee_joint</td></tr>
+                <tr><td>10</td><td>right_ankle_pitch_joint</td></tr>
+                <tr><td>11</td><td>right_ankle_roll_joint</td></tr>
+                <tr><td>12</td><td>waist_yaw_joint</td></tr>
+                <tr><td>13</td><td>waist_roll_joint</td></tr>
+                <tr><td>14</td><td>waist_pitch_joint</td></tr>
+                <tr><td>15</td><td>left_shoulder_pitch_joint</td></tr>
+                <tr><td>16</td><td>left_shoulder_roll_joint</td></tr>
+                <tr><td>17</td><td>left_shoulder_yaw_joint</td></tr>
+                <tr><td>18</td><td>left_elbow_joint</td></tr>
+                <tr><td>19</td><td>left_wrist_roll_joint</td></tr>
+                <tr><td>20</td><td>left_wrist_pitch_joint</td></tr>
+                <tr><td>21</td><td>left_wrist_yaw_joint</td></tr>
+                <tr><td>22</td><td>right_shoulder_pitch_joint</td></tr>
+                <tr><td>23</td><td>right_shoulder_roll_joint</td></tr>
+                <tr><td>24</td><td>right_shoulder_yaw_joint</td></tr>
+                <tr><td>25</td><td>right_elbow_joint</td></tr>
+                <tr><td>26</td><td>right_wrist_roll_joint</td></tr>
+                <tr><td>27</td><td>right_wrist_pitch_joint</td></tr>
+                <tr><td>28</td><td>right_wrist_yaw_joint</td></tr>
             </table>
+        </section>
+
+        <section id="linking-sdk-to-simulation">
+            <h2>Linking SDK to Simulation</h2>
+            <p>The `unitree_mujoco` simulator is designed for a seamless transition from simulation to a real robot ("sim-to-real"). This is achieved by changing the network interface and DDS domain ID in your control code. The same code can be used to control both the simulated and the real robot.</p>
+
+            <h3>C++ Example</h3>
+            <p>In C++, you can switch between simulation and a real robot by changing the parameters in `ChannelFactory::Instance()->Init()`.</p>
+            <pre><code>
+// For simulation
+ChannelFactory::Instance()->Init(1, "lo");
+
+// For real robot
+// The first parameter is the domain ID (0 for the real robot), 
+// and the second parameter is the network interface name.
+ChannelFactory::Instance()->Init(0, "enp3s0");
+            </code></pre>
+
+            <h3>Python Example</h3>
+            <p>In Python, you can switch between simulation and a real robot by changing the parameters in `ChannelFactoryInitialize()`.</p>
+            <pre><code>
+# For simulation
+ChannelFactoryInitialize(1, "lo")
+
+# For real robot
+# The first parameter is the domain ID (0 for the real robot),
+# and the second parameter is the network interface name.
+ChannelFactoryInitialize(0, "enp3s0")
+            </code></pre>
         </section>
 
         <section id="running-simulation">
@@ -87,9 +135,7 @@
 import time
 
 if __name__ == "__main__":
-    sport_client = LocoClient()  
-    sport_client.SetTimeout(10.0)
-    sport_client.Init()
+    sport_.Init()
 
     # Make the robot stand up
     sport_client.Squat2StandUp()

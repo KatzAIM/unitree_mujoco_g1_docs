@@ -11,5 +11,6 @@ This project provides a comprehensive guide to the G1 robot simulation in Mujoco
 - Joint information and configurations
 - Running simulations using Python
 - C++ examples for low-level control
+- Linking SDK to Simulation
 
 For more information, please refer to the documentation website.
