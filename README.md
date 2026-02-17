@@ -2,9 +2,6 @@
 
 This repository contains the documentation for using the Unitree Mujoco package with the G1 robot.
 
-## GitHub Pages
-
-The documentation is hosted on GitHub Pages at the following URL:
 [https://KatzAIM.github.io/unitree_mujoco_g1_docs/](https://KatzAIM.github.io/unitree_mujoco_g1_docs/)
 
 ## About the Project
